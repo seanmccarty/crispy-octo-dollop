@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<root version="3.0">
+	<properties>
+	<name>Critical Core</name>
+	<version>0.1</version>
+	<author>mccartysr</author>
+	<description>Critical Core</description>
+	<loadorder>0</loadorder>
+	<ruleset>
+		<name>5E</name>
+		<minrelease>8.1</minrelease>
+	</ruleset>
+	</properties>
+	<announcement text="Critical Core development v0.1.38 by mccartysr, 2022" font="emotefont" icon="Logo_Mccartysr"/>
+	<base>
+	<includefile source="xml/cc_resources.xml"/>
+	</base>
+</root>
