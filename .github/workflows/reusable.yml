@@ -15,7 +15,7 @@ env:
   EXTENSION: '.ext'
   FG_USER_PASS: ${{ secrets.FORGE_USER_PASS }}
   FG_USER_NAME: ${{ secrets.FORGE_USER_NAME }}
-  FG_ITEM_ID: ${{ inputs.FORGE_ITEM_ID }}
+  FG_ITEM_ID: ${{ vars.FORGE_ITEM_ID }}
   TAG_CURR: ${{ github.ref_name }}
   FILE_TYPE_EXLUSIONS: '*.git* /*node_modules/* .editorconfig body.md *.psd *.xcf forge-thumbnail.png thumbnail.png *.toml *.code-workspace'
 
