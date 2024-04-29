@@ -11,6 +11,14 @@ on:
           required: true  # Specifies that this input is mandatory
           type: string  # Specifies the type of the input
 
+env:
+  EXTENSION: '.ext'
+  FG_USER_PASS: ${{ secrets.FORGE_USER_PASS }}
+  FG_USER_NAME: ${{ secrets.FORGE_USER_NAME }}
+  FG_ITEM_ID: ${{ inputs.FORGE_ITEM_ID }}
+  TAG_CURR: ${{ github.ref_name }}
+  FILE_TYPE_EXLUSIONS: '*.git* /*node_modules/* .editorconfig body.md *.psd *.xcf forge-thumbnail.png thumbnail.png *.toml *.code-workspace'
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -20,12 +28,39 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo ${{ inputs.test-path }}
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+        - name: Checkout Repo Assets
+          uses: actions/checkout@v4
+      
+        - name: Replace Version
+          uses: jacobtomlinson/gha-find-replace@v3
+          with:
+            find: '~dev_version~'
+            exclude: ${{ env.FILE_TYPE_EXLUSIONS }}
+            replace: ${{github.ref_name}}
+      
+        - id: get_version
+          uses: maltoze/get-version-action@v1
+      
+        - name: Replace Version
+          uses: jacobtomlinson/gha-find-replace@v3
+          with:
+            find: '~dev_version_short~'
+            exclude: ${{ env.FILE_TYPE_EXLUSIONS }}
+            replace: ${{ steps.get_version.outputs.major }}.${{ steps.get_version.outputs.minor }}
+      
+        - name: Zip Assets Into ${{ env.EXTENSION }} File
+          uses: thedoctor0/zip-release@0.7.6
+          with:
+            filename: ${{ github.event.repository.name }}${{ env.EXTENSION }}
+            exclusions: ${{env.FILE_TYPE_EXLUSIONS}}
+      
+        - name: Add ${{ env.EXTENSION }} File to Release
+          uses: ncipollo/release-action@v1
+          with:
+            artifacts: ${{ github.event.repository.name }}${{ env.EXTENSION }}
+            generateReleaseNotes: true
+      
+        - uses: actions/upload-artifact@v4
+          with:
+            name: ${{ github.event.repository.name }}${{ env.EXTENSION }}
+            path: ${{ github.event.repository.name }}${{ env.EXTENSION }}
