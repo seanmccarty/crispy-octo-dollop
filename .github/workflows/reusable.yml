@@ -6,10 +6,6 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   workflow_call:
-    inputs:  # Defines the inputs that can be passed from the caller workflow
-        test-path:  # Name of the input
-          required: true  # Specifies that this input is mandatory
-          type: string  # Specifies the type of the input
 
 env:
   EXTENSION: '.ext'
