@@ -19,7 +19,7 @@ env:
   FG_USER_PASS: ${{ secrets.FORGE_USER_PASS }}
   FG_USER_NAME: ${{ secrets.FORGE_USER_NAME }}
   FG_ITEM_ID: ${{ vars.FORGE_ITEM_ID }}
-  FILE_TYPE_EXLUSIONS: '*.git* /*node_modules/* .editorconfig body.md *.psd *.xcf forge-thumbnail.png thumbnail.png *.toml '
+  FILE_TYPE_EXLUSIONS: '*.git* /*node_modules/* .editorconfig body.md *.psd *.xcf forge-thumbnail.png thumbnail.png *.toml'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
