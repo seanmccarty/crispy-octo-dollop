@@ -6,14 +6,20 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   workflow_call:
+    inputs:  # Defines the inputs that can be passed from the caller workflow
+        extension:  # Name of the input
+          required: true  # Specifies that this input is mandatory
+          type: string  # Specifies the type of the input
+        exclusions:  # Name of the input
+          required: true  # Specifies that this input is mandatory
+          type: string  # Specifies the type of the input
 
 env:
-  EXTENSION: '.ext'
+  EXTENSION: ${{inputs.extension}}
   FG_USER_PASS: ${{ secrets.FORGE_USER_PASS }}
   FG_USER_NAME: ${{ secrets.FORGE_USER_NAME }}
   FG_ITEM_ID: ${{ vars.FORGE_ITEM_ID }}
-  TAG_CURR: ${{ github.ref_name }}
-  FILE_TYPE_EXLUSIONS: '*.git* /*node_modules/* .editorconfig body.md *.psd *.xcf forge-thumbnail.png thumbnail.png *.toml *.code-workspace'
+  FILE_TYPE_EXLUSIONS: '*.git* /*node_modules/* .editorconfig body.md *.psd *.xcf forge-thumbnail.png thumbnail.png *.toml '
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,7 +29,11 @@ jobs:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
+
     steps:
+        - name: Set env
+          run: echo ::set-env name=FILE_TYPE_EXLUSIONS::${{ env.FILE_TYPE_EXLUSIONS }}    ${{ inputs.exclusions }}
+          
         - name: Checkout Repo Assets
           uses: actions/checkout@v4
       
