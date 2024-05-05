@@ -19,7 +19,7 @@ env:
   FG_USER_PASS: ${{ secrets.FORGE_USER_PASS }}
   FG_USER_NAME: ${{ secrets.FORGE_USER_NAME }}
   FG_ITEM_ID: ${{ vars.FORGE_ITEM_ID }}
-  FILE_TYPE_EXLUSIONS: '*.git* /*node_modules/* .editorconfig body.md *.psd *.xcf forge-thumbnail.png thumbnail.png *.toml'
+  FILE_TYPE_EXLUSIONS: '*.git* /*node_modules/* .editorconfig body.md *.psd *.xcf forge-thumbnail.png thumbnail.png *.toml ${{ inputs.exclusions }}'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,8 +31,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
 
     steps:
-        - name: Set env
-          run: echo "FILE_TYPE_EXLUSIONS=${{ env.FILE_TYPE_EXLUSIONS }} ${{ inputs.exclusions }}" >> "$GITHUB_ENV"
+        # - name: Set env
+        #   run: echo "FILE_TYPE_EXLUSIONS=${{ env.FILE_TYPE_EXLUSIONS }} ${{ inputs.exclusions }}" >> "$GITHUB_ENV"
           
         - name: Checkout Repo Assets
           uses: actions/checkout@v4
